@@ -32,6 +32,9 @@ include("../connect.php");
         <div class="row">
             <div class="offset-md-2 col-md-8 offset-md-2">
                 <div class="card">
+                    <div class="alert alert-info text-dark" id="alert-message" style="display:none">
+                       
+                    </div>
                     <div class="card-header alert alert-default">
                         <p class="h4">Bienvenu dans la page d'admnistrateur <?= $name ?> <?= $firstname ?></p>
                     </div>
@@ -54,7 +57,7 @@ include("../connect.php");
                             <hr>
 
                             <small class="text-muted">Mois de rapport</small>
-                            <select name="categories" id="categories" class="form-control">
+                            <select name="month" id="month" class="form-control">
                                 <?php
                                 $query = mysqli_query($conn, "SELECT * FROM month");
                                 $out = "";
@@ -71,13 +74,13 @@ include("../connect.php");
 
 
                             <small class="text-muted">Heures</small>
-                            <input type="number" name="Heures" class="form-control border-success p-2" id="Heures">
+                            <input type="number" name="heures" class="form-control border-success p-2" id="heures">
 
-                            <small class="text-muted">Publications</small>
-                            <input type="number" name="Publications" class="form-control border-success p-2" id="Publications">
+                            <small class="text-muted">publications</small>
+                            <input type="number" name="publications" class="form-control border-success p-2" id="publications">
 
                             <small class="text-muted">Videos</small>
-                            <input type="number" name="Videos" class="form-control border-success p-2" id="Videos">
+                            <input type="number" name="videos" class="form-control border-success p-2" id="videos">
 
                             <small class="text-muted">Nouvelle visite</small>
                             <input type="number" name="nv" class="form-control border-success p-2" id="nv">
@@ -116,6 +119,26 @@ include("../connect.php");
                 });
                 }
             });
+
+            $(document).on('submit', '#form-report', function(e){
+                e.preventDefault();
+                $.ajax({
+                    url:"report.php",
+                    method:"POST",
+                    data: new FormData(this),
+                    cache:false,
+                    processData:false,
+                    contentType:false,
+                    success:function(data){
+                        $("#form-report").css("display", "none");
+                        //$("#alert-message").fadeIn("slow");
+                        $("#form-report")[0].reset();
+                        $("#alert-message").html(data);
+                        $("#alert-message").fadeIn(3000);
+                        $("#alert-message").fadeOut(5000);
+                    }
+                });
+            })
 
 
         })
