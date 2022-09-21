@@ -41,10 +41,29 @@ include("../connect.php");
 
                     <div class="card-body">
                         <p class="h5 ">Quelques options pour l'admnistrateur</p>
+                    <div class="div row">
+                        <div class="col-lg-3">
+                            <p class="h6">
+                                <button class="btn btn-outline-success alert alert-success add-report">Ajouter un rapport</button> 
+                            </p>
 
-                        <p class="h6">
-                            <button class="btn btn-outline-success alert alert-success add-report">Ajouter un rapport</button> 
-                        </p>
+                            <p class="h6">
+                                <button class="btn btn-outline-warning alert alert-warning see-report">Imprimer un rapport</button> 
+                            </p>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <p class="h6">
+                                <button class="btn btn-outline-info alert alert-info modify-report">Modifier un rapport</button> 
+                            </p>
+
+                            <p class="h6">
+                                <button class="btn btn-outline-dark alert alert-dark group-report"> Mon groupe de predication</button> 
+                            </p>
+                        </div>
+
+                        
+                    </div>
 
                         <form id="form-report" style="display:none">
                             <small class="text-muted">Ecrivez le nom du proclamateur</small>
@@ -92,6 +111,30 @@ include("../connect.php");
                         </form>
 
                     </div>
+
+                    <div id="see-report-div" class="m-5" style="display:none">
+                        <form action="report.php" method="GET">
+                            <small class="text-muted text-warning">Choisissez le mois à imprimer le rapport</small>
+                            <select name="month" id="month" class="form-control">
+                                    <?php
+                                    $query = mysqli_query($conn, "SELECT * FROM month");
+                                    $out = "";
+                                    while($res = mysqli_fetch_array($query)){
+                                        $out .="
+                                        <option value=".$res['id']." class='form-control'>".$res['libelle']."</option>
+                                        ";
+
+                                    }
+                                    echo $out;
+                                    ?>     
+                    
+                            </select>
+                            <small class="text-danger text-muted text-see-report" style="display:none">Rassurez-vous que vous qu'au cas ou vous cliquez sur janvier,
+                                 vous ayez d'abord choisir un autre mois après revenir sur janvier
+                            </small>
+                            <input type="submit" value="Imprimer" class="btn btn-outline-warning m-2">
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -122,16 +165,28 @@ include("../connect.php");
 
             $(document).on('submit', '#form-report', function(e){
                 e.preventDefault();
+                var heures = $("#heures").val();
+                var videos = $("#videos").val();
+                var publications = $("#publications").val();
+                var publishers = $("#id").val();
+                var cb = $("#cb").val();
+                var nv = $("#nv").val();
+                var month = $("#month").val();
+                
                 $.ajax({
-                    url:"report.php",
+                    url:"ajax_file.php",
                     method:"POST",
-                    data: new FormData(this),
-                    cache:false,
-                    processData:false,
-                    contentType:false,
+                    data: {
+                        heures:heures,
+                        videos:videos,
+                        publications:publications,
+                        publishers:publishers,
+                        cb:cb,
+                        nv:nv,
+                        month:month
+                    },
                     success:function(data){
                         $("#form-report").css("display", "none");
-                        //$("#alert-message").fadeIn("slow");
                         $("#form-report")[0].reset();
                         $("#alert-message").html(data);
                         $("#alert-message").fadeIn(3000);
@@ -139,6 +194,23 @@ include("../connect.php");
                     }
                 });
             })
+
+            $(document).on('click', '.see-report', function(){
+                $("#see-report-div").css("display", "block");
+            });
+
+            $(document).on('change', '#month', function(){
+                /* var month_on_change = $("#month").val();
+                //sending the id of the selected month to the server in order to prepapre the pdf that we are going to display 
+                $.ajax({
+                    url:"report.php",
+                    method:"GET",
+                    data:{id:month_on_change},
+                    success:function(data){
+                        
+                    }
+                }); */
+            });
 
 
         })
