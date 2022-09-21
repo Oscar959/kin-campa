@@ -40,8 +40,8 @@ include("../connect.php");
                     </div>
 
                     <div class="card-body">
-                        <p class="h5 ">Quelques options pour l'admnistrateur</p>
-                    <div class="div row">
+                    <div class="div row principal-div">
+                    <p class="h5 ">Quelques options pour l'admnistrateur</p>
                         <div class="col-lg-3">
                             <p class="h6">
                                 <button class="btn btn-outline-success alert alert-success add-report">Ajouter un rapport</button> 
@@ -66,6 +66,7 @@ include("../connect.php");
                     </div>
 
                         <form id="form-report" style="display:none">
+                            <p class="h5 text-center text-success">Remplissez le formulaire de raport du proclammateur</p>
                             <small class="text-muted">Ecrivez le nom du proclamateur</small>
                             <input type="text" name="name" class="form-control border-success p-2 name-keyup" id="name">
 
@@ -112,7 +113,8 @@ include("../connect.php");
 
                     </div>
 
-                    <div id="see-report-div" class="m-5" style="display:none">
+                    <div id="see-report-div" class="m-2" style="display:none">
+                        <p class="h5 text-center text-warning">Formulaire du mois d'impression de rapport</p>
                         <form action="report.php" method="GET">
                             <small class="text-muted text-warning">Choisissez le mois à imprimer le rapport</small>
                             <select name="month" id="month" class="form-control">
@@ -135,6 +137,27 @@ include("../connect.php");
                             <input type="submit" value="Imprimer" class="btn btn-outline-warning m-2">
                         </form>
                     </div>
+
+                    <div id="group-report-div" class="m-2 bg-outline-dark" style="display:none">
+                        <p class="h5 text-center">Quelques options pour mon groupe de predication</p>
+
+                        <div class="div row mt-2">
+                            <div class="col-lg-4">
+                                <p class="h6">
+                                    <button class="btn btn-outline-success alert alert-success accept-publisher">Accepter la demande d'un proclamateur</button> 
+                                </p>
+
+                                <p class="h6">
+                                    <button class="btn btn-outline-warning alert alert-warning see-report">Liberer un proclamateur pour un autre groupe</button> 
+                                </p>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <div id="accept-publisher-div" class="text-warning" style="display:none">
+                        <p class="h5 text-center text-warning">La liste de ceux qui ont envoyé les demandes pour faire partie du groupe</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -144,6 +167,7 @@ include("../connect.php");
         $(document).ready(function(){
             $(document).on('click', '.add-report', function(){
                 $("#form-report").css("display", "block");
+                $(".principal-div").css("display", "none");
             });
 
             $(document).on('keyup', '.name-keyup', function(){
@@ -197,6 +221,7 @@ include("../connect.php");
 
             $(document).on('click', '.see-report', function(){
                 $("#see-report-div").css("display", "block");
+                $(".principal-div").css("display", "none");
             });
 
             $(document).on('change', '#month', function(){
@@ -210,6 +235,17 @@ include("../connect.php");
                         
                     }
                 }); */
+            });
+
+            $(document).on('click', '.group-report', function(){
+                $("#group-report-div").css("display", "block");
+                $(".principal-div").css("display", "none");
+                
+            });
+
+            $(document).on('click', '.accept-publisher', function(){
+                $("#accept-publisher-div").css("display", "block");
+                //$(".principal-div").css("display", "none");
             });
 
 
