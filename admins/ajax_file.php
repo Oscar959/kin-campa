@@ -46,6 +46,19 @@ if(isset($_POST['name'])){
    }
    
     echo $out;
-    
-}
+// code sending data report to the db  
+}else if(isset($_POST['month'])){
+    $heures = $_POST['heures'];
+    $videos = $_POST['videos'];
+    $publications = $_POST['publications'];
+    $nv = $_POST['nv'];
+    $cb = $_POST['cb'];
+    $id_publishers = $_POST['publishers'];
+    $id_month = $_POST['month'];
+
+   $query= mysqli_query($conn, "INSERT INTO report VALUES(NULL, $heures, $publications, $videos, $nv, $cb,$id_month, $id_publishers)");
+   $out = '<p class="text-dark text-center">Rapport enregistré avec succès</p>';
+   echo $out;
+
+} 
 ?>
